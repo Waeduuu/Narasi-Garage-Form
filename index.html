@@ -71,7 +71,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 <section class="section"><div class="eyebrow">STEP 03 / SEMAK</div><h2>Siap daftar?</h2><label class="agree"><input type="checkbox" id="agree" required><span>Saya memastikan semua informasi benar dan bersedia mengikuti interview dan SOP Narasi Garage.</span></label><div class="buttons"><button type="submit" class="btn primary">PERIKSA PENDAFTARAN →</button><button type="reset" class="btn secondary">RESET</button></div><p id="status" class="status" aria-live="polite"></p></section></form>
 <aside class="sidebar"><div class="side"><h3>📌 CARA MENDAFTAR</h3><ul><li>Pilih <b>Petinggi</b>, lalu pilih jabatan <b>Supervisor</b> atau <b>Manager</b>. Pendaftaran <b>Pekerja / Mekanik</b> ditutup.</li><li>Isi semua pertanyaan.</li><li>Klik <b>Periksa Pendaftaran</b>.</li><li>Klik <b>APPLY</b> untuk mengirim pendaftaran ke Discord.</li></ul></div></aside></div></main>
 <footer><div class="wrap">© NARASI GARAGE • OPEN RECRUITMENT</div></footer>
-<dialog id="dialog"><div class="eyebrow">REVIEW PERMOHONAN</div><h2>Periksa jawaban pendaftaran</h2><p class="hint">Pastikan semua jawaban benar sebelum klik APPLY untuk mengirim pendaftaran.</p><div class="notice" id="deliveryNotice">Jawaban lengkap akan dikirim langsung ke channel Discord Recruitment.</div><pre id="preview"></pre><div class="buttons"><button class="btn primary" type="button" id="sendDiscord">APPLY</button><button class="btn secondary" type="button" id="close">KEMBALI EDIT</button></div><p class="status" id="copystatus" aria-live="polite"></p></dialog>
+<dialog id="dialog"><div class="eyebrow">REVIEW PERMOHONAN</div><h2>Periksa jawaban pendaftaran</h2><p class="hint">Pastikan semua jawaban benar sebelum klik APPLY untuk mengirim pendaftaran.</p><div class="notice" id="deliveryNotice">Permohonan dikirim dalam satu pesan ke Discord Recruitment. Jawaban yang melebihi batas pesan dilampirkan sebagai file teks.</div><pre id="preview"></pre><div class="buttons"><button class="btn primary" type="button" id="sendDiscord">APPLY</button><button class="btn secondary" type="button" id="close">KEMBALI EDIT</button></div><p class="status" id="copystatus" aria-live="polite"></p></dialog>
 <script>
 (()=>{
 const $=id=>document.getElementById(id),form=$('form'),dlg=$('dialog');
@@ -111,57 +111,57 @@ const answers=role==='PETINGGI'?[['Jabatan yang dilamar','petinggiPosition'],['N
 const special=role==='PETINGGI'?[["1. Apakah saat ini kamu masih aktif bermain di server lain sebelum mengisi formulir atau mengikuti interview sebagai Petinggi Narasi Garage? Jika ya, sebutkan nama server dan jabatan kamu di sana.","supq17"],["2. Ceritakan pengalaman kamu sebagai pemimpin atau petinggi di organisasi sebelumnya.","supq1"],["3. Kenapa kamu ingin menjadi Petinggi Narasi Garage, bukan mekanik biasa?","supq2"],["4. Menurut kamu, apa tiga tanggung jawab utama seorang Petinggi bengkel?","supq3"],["5. Apa tindakan kamu jika mekanik memberikan modifikasi gratis atau diskon tanpa izin?","supq4"],["6. Jika mekanik mengenakan harga yang tidak sesuai daftar LOCAL atau IMPORT, bagaimana kamu menanganinya?","supq5"],["7. Apa yang harus dilakukan sebelum memulai modifikasi kendaraan customer, dan bagaimana kamu memastikan mekanik mematuhinya?","supq6"],["8. Bagaimana cara kamu membedakan kendaraan IMPORT atau kendaraan LOCAL?","supq7"],["9. Jika customer marah dan menuduh mekanik melakukan penipuan harga, apa langkah kamu?","supq8"],["10. Bagaimana kamu menangani mekanik yang sering terlambat duty atau tidak mengisi absensi?","supq9"],["11. Jika dua mekanik bertengkar saat duty, bagaimana kamu menyelesaikan masalah tersebut?","supq10"],["12. Jika bengkel ramai customer tetapi hanya sedikit mekanik yang duty, apa tindakan kamu?","supq11"],["13. Bagaimana kamu melatih trainee baru agar memahami SOP, harga modifikasi, dan layanan customer?","supq12"],["14. Apa tindakan kamu jika stok bengkel berkurang tetapi tidak ada catatan Withdraw atau Deposit?","supq13"],["15. Jika mekanik senior atau petinggi sendiri melanggar SOP, apa yang akan kamu lakukan?","supq14"],["16. Jika diterima menjadi Petinggi, apa rencana kamu untuk meningkatkan Narasi Garage dalam 30 hari pertama?","supq15"],["17. Apakah kamu saat ini tergabung dalam badside?","supq16"]]:[["1. Pernah bermain roleplay sebelumnya?","mechq1"],["2. Jika ya, sebutkan server yang pernah diikuti","mechq2"],["3. Apa pemahaman Anda tentang Roleplay?","mechq3"],["4. Apakah Anda memiliki pengalaman sebagai mekanik?","mechq4"],["5. Berapa lama pengalaman Anda sebagai mekanik?","mechq5"],["6. Apa saja tugas yang biasa Anda lakukan?","mechq6"],["7. Apakah Anda bisa bekerja dalam tim?","mechq7"],["8. Seberapa sering Anda aktif?","mechq8"],["9. Jam online Anda biasanya?","mechq9"],["10. Kenapa Anda ingin bergabung dengan bengkel kami?","mechq10"],["11. Apa kelebihan Anda dibanding orang lain?","mechq11"],["12. Apa kontribusi yang bisa Anda berikan untuk bengkel ini?","mechq12"],["13. Apakah Anda siap mengikuti SOP & semua peraturan?","mechq13"],["14. Apakah Anda siap menerima konsekuensi jika melanggar aturan?","mechq14"]];
 pendingApplication={role,position:role==='PETINGGI'?val('petinggiPosition'):null,applicant:answers.map(([name,id])=>({question:name,answer:val(id)})),answers:special.map(([name,id])=>({question:name,answer:val(id)||((role==='PEKERJA'&&(id==='mechq2'||id==='mechq5'))?'Tidak berlaku':'-')}))};
 report=['NARASI GARAGE | OPEN RECRUITMENT','===============================','POSISI: '+role,'','DATA DIRI',...answers.flatMap(([name,id])=>[name+': '+val(id)]),'','PERTANYAAN KHUSUS',...special.flatMap(([name,id])=>[name+':',val(id)||((role==='PEKERJA'&&(id==='mechq2'||id==='mechq5'))?'Tidak berlaku':'-'),'']),'Pernyataan: Bersedia mengikuti interview dan SOP Narasi Garage.'].join('\n');
-$('preview').textContent=report;$('copystatus').textContent='';$('deliveryNotice').textContent='Periksa kembali jawaban. Klik APPLY untuk mengirim permohonan.';$('sendDiscord').disabled=false;$('sendDiscord').textContent='APPLY';dlg.showModal()});
+$('preview').textContent=report;$('copystatus').textContent='';$('deliveryNotice').textContent='Periksa kembali jawaban. Klik APPLY untuk mengirim satu pesan permohonan. Jawaban panjang akan dilampirkan sebagai file teks.';$('sendDiscord').disabled=false;$('sendDiscord').textContent='APPLY';dlg.showModal()});
 form.addEventListener('reset',()=>{role='';document.querySelectorAll('.role').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});['petinggiBlock','workerBlock'].forEach(id=>{$(id).classList.remove('visible');$(id).querySelectorAll('textarea,select,input').forEach(el=>{el.required=false;el.disabled=true})});document.querySelectorAll('.common-sup,.common-mechanic,.worker-followup').forEach(f=>{f.classList.remove('visible');f.querySelectorAll('input,select,textarea').forEach(el=>{el.required=false;el.disabled=true})});$('roleStatus').textContent='Belum memilih posisi.';$('roleStatus').style.color='';$('status').textContent=''});
 $('close').onclick=()=>dlg.close();
-function buildRecruitmentEmbeds(application){
+function buildRecruitmentMessage(application){
  const isPetinggi=application.role==='PETINGGI';
  const positionLabel=isPetinggi&&['SUPERVISOR','MANAGER'].includes(application.position)?'PETINGGI • '+application.position:'PETINGGI';
  const title=isPetinggi?'🛡️ NARASI GARAGE | '+positionLabel:'🔧 NARASI GARAGE | MEKANIK';
  const color=isPetinggi?0x36D9E8:0xE7B450;
  const now=new Date(),id=now.getTime().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,7).toUpperCase();
  const date=new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(now);
- const clean=(value,max)=>String(value==null?'':value).trim().slice(0,max);
+ const text=value=>String(value==null?'':value).trim();
+ const footer={text:'NARASI GARAGE • '+(isPetinggi?positionLabel:'MEKANIK')+' APPLICATION • '+date+' WIB'};
+ const description='**OPEN RECRUITMENT • PERMOHONAN BARU**\n**ID Permohonan:** '+id;
  const fields=[];
- application.applicant.forEach(item=>fields.push({name:'👤 '+clean(item.question,230),value:clean(item.answer,1000)||'-',inline:true}));
+ application.applicant.forEach(item=>fields.push({name:'👤 '+text(item.question).slice(0,230),value:text(item.answer)||'-',inline:true}));
  application.answers.forEach(item=>{
-  const name=clean(item.question,200),answer=clean(item.answer,1400)||'-';
-  const segments=answer.match(/[\s\S]{1,850}/g)||['-'];
+  const name=text(item.question).slice(0,230),answer=text(item.answer)||'-';
+  const segments=[];let segment='';
+  for(const character of answer){if(segment.length+character.length>1000){segments.push(segment);segment=''}segment+=character}
+  if(segment)segments.push(segment);
   segments.forEach((segment,index)=>fields.push({name:'📋 '+name+(segments.length>1?' • '+(index+1)+'/'+segments.length:''),value:segment,inline:false}));
  });
- const batches=[];let group=[],length=200;
- fields.forEach(field=>{
-  const weight=field.name.length+field.value.length;
-  if(group.length&&(group.length>=22||length+weight>4750)){batches.push(group);group=[];length=200}
-  group.push(field);length+=weight;
- });
- if(group.length)batches.push(group);
- return batches.map((group,index)=>({
-  username:'Narasi Garage Recruitment',
-  allowed_mentions:{parse:[]},
-  embeds:[{
-    title:title+(batches.length>1?' • '+(index+1)+'/'+batches.length:''),
-    description:index===0?'**OPEN RECRUITMENT • PERMOHONAN BARU**\n**ID Permohonan:** '+id:'**LANJUTAN JAWABAN • ID:** '+id,
-    color,fields:group,
-    footer:{text:'NARASI GARAGE • '+(isPetinggi?positionLabel:'MEKANIK')+' APPLICATION • '+date+' WIB'},
-    timestamp:now.toISOString()
-  }]
- }));
+ const embeds=[];
+ for(let i=0;i<fields.length;i+=25){
+  const embed={title:i===0?title:'📋 LANJUTAN JAWABAN',color,fields:fields.slice(i,i+25)};
+  if(i===0){embed.description=description;embed.timestamp=now.toISOString()}
+  embeds.push(embed);
+ }
+ if(!embeds.length)embeds.push({title,description,color,timestamp:now.toISOString()});
+ embeds[embeds.length-1].footer=footer;
+ const total=embeds.reduce((sum,embed)=>sum+(embed.title||'').length+(embed.description||'').length+(embed.footer?.text||'').length+(embed.fields||[]).reduce((n,field)=>n+field.name.length+field.value.length,0),0);
+ const payload={username:'Narasi Garage Recruitment',allowed_mentions:{parse:[]},embeds};
+ if(total<=6000&&embeds.length<=10&&fields.every(field=>field.value.length<=1024))return{payload,attachment:null};
+ const filename='narasi-permohonan-'+id+'.txt';
+ const fullText=[title,'ID Permohonan: '+id,'Tanggal: '+date+' WIB','','DATA DIRI',...application.applicant.flatMap(item=>[text(item.question)+': '+text(item.answer)]),'','PERTANYAAN KHUSUS',...application.answers.flatMap(item=>[text(item.question),text(item.answer)||'-','']),'Pernyataan: Bersedia mengikuti interview dan SOP Narasi Garage.'].join('\n');
+ payload.embeds=[{title,description:description+'\n\nJawaban lengkap terlampir dalam file teks pada pesan ini.',color,fields:application.applicant.slice(0,3).map(item=>({name:'👤 '+text(item.question).slice(0,230),value:text(item.answer).slice(0,1000)||'-',inline:true})),footer,timestamp:now.toISOString()}];
+ payload.attachments=[{id:0,filename}];
+ return{payload,attachment:{filename,file:new Blob([fullText],{type:'text/plain;charset=utf-8'})}};
 }
 $('sendDiscord').onclick=async()=>{
  if(!pendingApplication){$('copystatus').textContent='❌ Jawaban belum disiapkan.';return}
  if(!RECRUITMENT_OPEN[pendingApplication.role]){$('copystatus').textContent='Pendaftaran Pekerja / Mekanik ditutup. Permohonan tidak dapat dikirim.';return}
- const btn=$('sendDiscord');btn.disabled=true;btn.textContent='⏳ APPLYING...';
+ const btn=$('sendDiscord');if(btn.disabled)return;btn.disabled=true;btn.textContent='⏳ APPLYING...';
  $('copystatus').textContent='Mengirim permohonan ke Discord...';
  try{
-  const entries=buildRecruitmentEmbeds(pendingApplication);
-  for(let i=0;i<entries.length;i++){
-   if(i>0)await new Promise(resolve=>setTimeout(resolve,1250));
-   const body=new FormData();
-   body.append('payload_json',JSON.stringify(entries[i]));
-   await fetch(WEBHOOKS.recruitment,{method:'POST',mode:'no-cors',body});
-  }
-  $('copystatus').textContent='✅ Permintaan pengiriman sudah dikirim. Silakan periksa channel Discord untuk memastikan semua log masuk ('+entries.length+' bagian).';
+  const {payload,attachment}=buildRecruitmentMessage(pendingApplication);
+  const body=new FormData();
+  body.append('payload_json',JSON.stringify(payload));
+  if(attachment)body.append('files[0]',attachment.file,attachment.filename);
+  await fetch(WEBHOOKS.recruitment,{method:'POST',mode:'no-cors',body});
+  $('copystatus').textContent='✅ Permintaan pengiriman satu pesan sudah dikirim.'+(attachment?' Jawaban lengkap dilampirkan sebagai file teks.':'')+' Periksa channel Discord untuk memastikan log diterima.';
   $('deliveryNotice').textContent='Pengiriman dari browser tidak dapat diverifikasi secara otomatis. Periksa channel Discord.';
   btn.textContent='✅ APPLIED';
  }catch(error){
